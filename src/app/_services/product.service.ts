@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Product } from '../_model/product.model';
 import { OrderDetails } from '../_model/order-details.model';
+import { MyOrderDetails } from '../_model/order-model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -43,5 +45,9 @@ export class ProductService {
 
   public deleteCartItem(cartId:any){
     return this.httpCLient.delete("http://localhost:9090/deleteCartItem/"+cartId);
+  }
+
+  public getMyOrders():Observable<MyOrderDetails[]>{
+    return this.httpCLient.get<MyOrderDetails[]>("http://localhost:9090/getOrderDetails");
   }
 } 
