@@ -14,6 +14,8 @@ export class BuyProductComponent {
 
 
   productDetails:Product[]=[];
+  isSingleProductCheckout:any;
+
 
   orderDetails:OrderDetails={
     fullName:'',
@@ -29,6 +31,8 @@ export class BuyProductComponent {
 
   ngOnInit():void{
     this.productDetails=this.activatedRoute.snapshot.data['productDetails'];
+    this.isSingleProductCheckout =this.activatedRoute.snapshot.paramMap.get("isSingleProductCheckout");
+
     this.productDetails.forEach(
         x=> this.orderDetails.orderProductQuantityList.push(
           {productId:x.productId,quantity:1}
@@ -38,7 +42,7 @@ export class BuyProductComponent {
     console.log(this.orderDetails);
   }
   public placeOrder(orderForm:NgForm){
-    this.productService.placeOrder(this.orderDetails).subscribe(
+    this.productService.placeOrder(this.orderDetails,this.isSingleProductCheckout).subscribe(
       {
         next: (reponse)=> {
           console.log(reponse);
