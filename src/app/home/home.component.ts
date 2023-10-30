@@ -13,6 +13,9 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit{
 
   productDetails:Product[]=[];
+  pageNumber: number=0;
+
+  showLoadButton=false;
 
   constructor(private productService:ProductService,
               private imageProcessingService:ImageProcessingService,
@@ -22,15 +25,22 @@ export class HomeComponent implements OnInit{
     this.getAllProducts();
   }
 
-  public getAllProducts(){
-    this.productService.getAllProducts()
+  public getAllProducts(searchKey:string=""){
+    this.productService.getAllProducts(this.pageNumber,searchKey)
     .pipe(
       map((x:Product[],i:any)=> x.map((product:Product)=> this.imageProcessingService.createImages(product)))
     )
     .subscribe({
           next:(resp:Product[])=>{
-            console.log(resp),
-            this.productDetails=resp;
+            console.log(resp);
+            if(resp.length==12){
+              this.showLoadButton=true;
+            }else{
+              this.showLoadButton=false;
+            } 
+            resp.forEach(
+              p=> this.productDetails.push(p)
+            );
           },
           error:(error)=>console.log(error),
           complete:()=> console.log('complete')
@@ -39,8 +49,19 @@ export class HomeComponent implements OnInit{
     );
   }
 
+  public loadMoreProduct(){
+    this.pageNumber=this.pageNumber+1;
+    this.getAllProducts();
+  }
   showProductDetails(productId:any){
       this.router.navigate(['/productViewDetails',{productId:productId}]);
+  }
+
+  searchByKeyWord(searchkeyword:any){
+    console.log(searchkeyword);
+    this.pageNumber=0;
+    this.productDetails=[];
+    this.getAllProducts(searchkeyword);
   }
 
 }

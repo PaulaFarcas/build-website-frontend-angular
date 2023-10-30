@@ -13,9 +13,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./show-product-details.component.css']
 })
 export class ShowProductDetailsComponent implements OnInit{
-
+  showLoadMoreProduct=false;
+  showTable=false;
   productDetails:Product[]=[];
   displayedColumns: string[] = ['Id', 'Product Name', 'description', 'Product Discounted Price', 'Product Actual Price','Actions'];
+  pageNumber:number=0;
 
   constructor(private productService:ProductService,
               public imagesDialog:MatDialog,
@@ -26,21 +28,35 @@ export class ShowProductDetailsComponent implements OnInit{
     this.getAllProducts();
   }
 
-  public getAllProducts(){
-    this.productService.getAllProducts()
+  public getAllProducts(searchKeyWord:string=""){
+    this.showTable=false;
+    this.productService.getAllProducts(this.pageNumber,searchKeyWord)
     .pipe(
       map((x:Product[],i:any)=> x.map((product:Product)=> this.imageProcessingService.createImages(product)))
     )
-    .subscribe({
+    .subscribe({ 
           next:(resp:Product[])=>{
-            console.log(resp),
-            this.productDetails=resp;
+            console.log(resp);
+            resp.forEach(
+              product=> this.productDetails.push(product));
+            this.showTable=true;
+            if(resp.length==12){
+              this.showLoadMoreProduct=true;
+            }else{
+              this.showLoadMoreProduct=false;
+            }
           },
           error:(error)=>console.log(error),
           complete:()=> console.log('complete')
           
       }
     );
+  }
+
+
+  loadMoreproduct(){
+    this.pageNumber+=1;
+    this.getAllProducts();
   }
 
   deleteProduct(productId: any){
@@ -65,5 +81,12 @@ export class ShowProductDetailsComponent implements OnInit{
 
   editproductDetails(productId:any){
     this.router.navigate(['/addNewProduct',{productId}]);
+  }
+
+  searchByKeyWord(searchkeyword:any){
+    console.log(searchkeyword);
+    this.pageNumber=0;
+    this.productDetails=[];
+    this.getAllProducts(searchkeyword);
   }
 }
