@@ -32,4 +32,12 @@ export class ProductService {
   public placeOrder(orderDetails:OrderDetails){
     return this.httpCLient.post("http://localhost:9090/placeOrder",orderDetails);
   }
+
+  public addToCart(productId:any){
+    return this.httpCLient.get("http://localhost:9090/addToCart/"+productId);
+  }
+
+  public getCartDetails(){
+    return this.httpCLient.get("http://localhost:9090/getCartDetails")
+  }
 } 

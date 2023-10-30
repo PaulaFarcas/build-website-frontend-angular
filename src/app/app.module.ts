@@ -30,6 +30,7 @@ import { ProductViewDetailsComponent } from './product-view-details/product-view
 import { BuyProductComponent } from './buy-product/buy-product.component';
 import { OrderConfirmationComponent } from './order-confirmation/order-confirmation.component';
 import { RegisterComponentComponent } from './register-component/register-component.component';
+import { CartComponent } from './cart/cart.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { RegisterComponentComponent } from './register-component/register-compon
     ProductViewDetailsComponent,
     BuyProductComponent,
     OrderConfirmationComponent,
-    RegisterComponentComponent
+    RegisterComponentComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
