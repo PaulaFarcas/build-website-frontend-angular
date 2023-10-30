@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class CartComponent implements OnInit{
 
 
-  displayedColumns: string[] = ['Name','Description','Price','DiscountedPrice'];
+  displayedColumns: string[] = ['Name','Description','Price','DiscountedPrice','Action'];
   cartDetails:any =[];
 
   constructor(private productService:ProductService,
@@ -33,14 +33,21 @@ export class CartComponent implements OnInit{
   }
 
   checkout(){
-    /*this.productService.getProductDetails(false,0).subscribe({
-        next:(response)=>console.log(response),
-        error:(error)=>console.log(error),
-        complete:()=>console.log("complete")
-    });*/
     this.router.navigate(['/buyProduct',{
       isSingleProductCheckout:false,id:0
     }
   ]);
+  }
+
+  delete(cartId:any){
+    console.log(cartId);
+    this.productService.deleteCartItem(cartId).subscribe({
+      next:(response)=>{
+        console.log(response);
+        this.getCartDetails();
+      },
+      error:(error)=>console.log(error),
+      complete:()=>console.log("complete")
+    })
   }
 }
