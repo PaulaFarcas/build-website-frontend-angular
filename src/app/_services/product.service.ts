@@ -51,7 +51,11 @@ export class ProductService {
     return this.httpCLient.get<MyOrderDetails[]>("http://localhost:9090/getOrderDetails");
   }
 
-  public getAllOrderDetailsForAdmin():Observable<MyOrderDetails[]>{
-    return this.httpCLient.get<MyOrderDetails[]>("http://localhost:9090/getAllOrderDetails");
+  public getAllOrderDetailsForAdmin(status:string):Observable<MyOrderDetails[]>{
+    return this.httpCLient.get<MyOrderDetails[]>("http://localhost:9090/getAllOrderDetails/"+status);
+  }
+
+  public markAsDelivered(orderId:any){
+    return this.httpCLient.get("http://localhost:9090/markOrderAsDelivered/"+orderId);
   }
 } 
