@@ -50,4 +50,8 @@ export class ProductService {
   public getMyOrders():Observable<MyOrderDetails[]>{
     return this.httpCLient.get<MyOrderDetails[]>("http://localhost:9090/getOrderDetails");
   }
+
+  public getAllOrderDetailsForAdmin():Observable<MyOrderDetails[]>{
+    return this.httpCLient.get<MyOrderDetails[]>("http://localhost:9090/getAllOrderDetails");
+  }
 } 
